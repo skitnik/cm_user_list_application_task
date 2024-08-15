@@ -1,0 +1,40 @@
+<div class="container">
+  <h1>Users</h1> 
+  <% if @users %>
+
+  <%= form_with(url: users_path, method: :get, local: true) do |form| %>
+    <div class="form-group">
+      <%= form.label :name, "Search users by name:" %>
+      <%= form.text_field :name, name: "search[name]", value: @search_name, class: "form-control border-primary" %>
+    </div>
+    <%= form.submit "Search", class: "btn btn-primary mt-2 mb-4" %>
+  <% end %>  
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td>
+            <%= user.name %>
+          </td>
+          <td><%= user.email %></td>
+          <td><%= user.phone %></td>
+          <td><%= link_to "Edit", edit_user_path(user) %></td>
+          <td><%= link_to "Delete", user_path(user), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @users %>
+  <% end %>
+
+  <%= link_to "Create new user", new_user_path, class: "btn btn-primary mt-2" %>
+</div>
